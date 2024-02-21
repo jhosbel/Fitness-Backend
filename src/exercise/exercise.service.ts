@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CreateExerciseDto } from 'src/dto/create-exercise.dto';
-import { UpdateExerciseDto } from 'src/dto/update-exercise.dto';
-import { Exercise } from 'src/schema/exercise.schema';
+import { CreateExerciseDto } from 'src/exercise/dto/create-exercise.dto';
+import { UpdateExerciseDto } from 'src/exercise/dto/update-exercise.dto';
+import { Exercise } from 'src/exercise/schema/exercise.schema';
 
 @Injectable()
 export class ExerciseService {

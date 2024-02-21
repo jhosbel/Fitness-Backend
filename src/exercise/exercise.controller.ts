@@ -11,8 +11,10 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import { ExerciseService } from './exercise.service';
-import { CreateExerciseDto } from 'src/dto/create-exercise.dto';
+import { CreateExerciseDto } from 'src/exercise/dto/create-exercise.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Peticiones para Ejercicios')
 @Controller('exercise')
 export class ExerciseController {
   constructor(private exerciseService: ExerciseService) {}

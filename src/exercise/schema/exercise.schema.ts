@@ -5,27 +5,30 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 })
 export class Exercise {
   @Prop({
-    unique: true,
-    required: true,
     trim: true,
+    unique: false,
+    index: false,
   })
   name: string;
+
   @Prop({
-    unique: true,
-    required: true,
     trim: true,
+    unique: false,
+    index: false,
   })
   muscle: string;
+
   @Prop({
-    unique: true,
-    required: true,
     trim: true,
+    unique: false,
+    index: false,
   })
   equipment: string;
+
   @Prop({
-    unique: true,
-    required: true,
     trim: true,
+    unique: false,
+    index: false,
   })
   instructions: string;
 }
