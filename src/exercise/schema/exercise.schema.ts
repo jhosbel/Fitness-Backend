@@ -6,28 +6,24 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 export class Exercise {
   @Prop({
     trim: true,
-    unique: false,
     index: false,
   })
   name: string;
 
   @Prop({
     trim: true,
-    unique: false,
     index: false,
   })
   muscle: string;
 
   @Prop({
     trim: true,
-    unique: false,
     index: false,
   })
   equipment: string;
 
   @Prop({
     trim: true,
-    unique: false,
     index: false,
   })
   instructions: string;

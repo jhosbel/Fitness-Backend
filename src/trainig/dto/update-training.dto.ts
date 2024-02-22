@@ -1,4 +1,33 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateTrainigDto } from './create-training.dto';
+import { Type } from 'class-transformer';
+import { IsArray, IsNumber, IsString, IsOptional } from 'class-validator';
 
-export class UpdateTrainigDto extends PartialType(CreateTrainigDto) {}
+class ExerciseInTrainingDto {
+  @IsNumber()
+  @IsOptional()
+  readonly series: string;
+
+  @IsString()
+  @IsOptional()
+  readonly weightType: string;
+
+  @IsNumber()
+  @IsOptional()
+  readonly weight: string;
+
+  @IsNumber()
+  @IsOptional()
+  readonly breakTime: string;
+
+  @IsString()
+  @IsOptional()
+  readonly description: string;
+}
+export class UpdateTrainigDto {
+  @IsString()
+  @IsOptional()
+  title: string;
+
+  @IsArray()
+  @Type(() => ExerciseInTrainingDto)
+  exercises: ExerciseInTrainingDto[];
+}

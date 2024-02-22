@@ -17,6 +17,9 @@ export class Training {
           type: mongoose.Schema.ObjectId,
           ref: 'Exercises',
         },
+        name: String,
+        muscle: String,
+        equipment: String,
         series: String,
         weightType: String,
         weight: Number,
@@ -27,6 +30,9 @@ export class Training {
   })
   exercises: {
     id: string;
+    name: string;
+    muscle: string;
+    equipment: string;
     series: number;
     weightType: string;
     weight: number;

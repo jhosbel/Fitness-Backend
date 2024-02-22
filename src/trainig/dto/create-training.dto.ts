@@ -5,10 +5,19 @@ class ExerciseInTrainingDto {
   @IsString()
   readonly id: string;
 
+  @IsString()
+  readonly name: string;
+
+  @IsString()
+  readonly muscle: string;
+
+  @IsString()
+  readonly equipment: string;
+
   @IsNumber()
   readonly series: string;
 
-  @IsNumber()
+  @IsString()
   readonly weightType: string;
 
   @IsNumber()

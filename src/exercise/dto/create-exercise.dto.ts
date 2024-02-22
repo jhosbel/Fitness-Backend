@@ -1,19 +1,20 @@
-import { IsString, IsOptional } from 'class-validator';
+import { IsString, IsOptional, IsNotEmpty } from 'class-validator';
 
 export class CreateExerciseDto {
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   name: string;
 
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   muscle?: string;
 
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   equipment?: string;
 
   @IsString()
+  @IsNotEmpty()
   @IsOptional()
   instructions?: string;
 }
