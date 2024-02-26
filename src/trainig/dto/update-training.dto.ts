@@ -20,12 +20,12 @@ class ExerciseInTrainingDto {
 
   @IsString()
   @IsOptional()
-  readonly description: string;
+  readonly note: string;
 }
 export class UpdateTrainigDto {
-  @IsString()
+  /* @IsString()
   @IsOptional()
-  title: string;
+  title: string; */
 
   @IsArray()
   @Type(() => ExerciseInTrainingDto)

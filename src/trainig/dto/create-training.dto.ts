@@ -1,5 +1,4 @@
-import { IsArray, IsString, IsNumber } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsString, IsNumber } from 'class-validator';
 
 class ExerciseInTrainingDto {
   @IsString()
@@ -15,7 +14,7 @@ class ExerciseInTrainingDto {
   readonly equipment: string;
 
   @IsNumber()
-  readonly series: string;
+  readonly series: number;
 
   @IsString()
   readonly weightType: string;
@@ -27,14 +26,12 @@ class ExerciseInTrainingDto {
   readonly breakTime: string;
 
   @IsString()
-  readonly description: string;
+  readonly breakTimeType: string;
+
+  @IsString()
+  readonly note: string;
 }
 
 export class CreateTrainigDto {
-  @IsString()
-  title: string;
-
-  @IsArray()
-  @Type(() => ExerciseInTrainingDto)
   exercises: ExerciseInTrainingDto[];
 }

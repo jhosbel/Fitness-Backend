@@ -5,29 +5,23 @@ import * as mongoose from 'mongoose';
   timestamps: true,
 })
 export class Training {
-  @Prop({
-    required: true,
-  })
-  title: string;
-
-  @Prop({
-    type: [
-      {
-        id: {
-          type: mongoose.Schema.ObjectId,
-          ref: 'Exercises',
-        },
-        name: String,
-        muscle: String,
-        equipment: String,
-        series: String,
-        weightType: String,
-        weight: Number,
-        breakTime: Number,
-        description: String,
+  @Prop([
+    {
+      id: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Exercises',
       },
-    ],
-  })
+      name: String,
+      muscle: String,
+      equipment: String,
+      series: String,
+      weightType: String,
+      weight: Number,
+      breakTime: Number,
+      breakTimeType: String,
+      note: String,
+    },
+  ])
   exercises: {
     id: string;
     name: string;
@@ -37,8 +31,9 @@ export class Training {
     weightType: string;
     weight: number;
     breakTime: number;
-    description: string;
-  };
+    breakTimeType: string;
+    note: string;
+  }[];
 }
 
 export const TrainingSchema = SchemaFactory.createForClass(Training);
