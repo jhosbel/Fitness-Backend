@@ -17,4 +17,8 @@ export class CreateExerciseDto {
   @IsNotEmpty()
   @IsOptional()
   instructions?: string;
+
+  @IsString()
+  @IsNotEmpty()
+  image?: string;
 }

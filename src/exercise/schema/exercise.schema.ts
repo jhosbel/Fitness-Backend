@@ -27,6 +27,12 @@ export class Exercise {
     index: false,
   })
   instructions: string;
+
+  @Prop({
+    trim: true,
+    index: false,
+  })
+  image: string;
 }
 
 export const ExerciseSchema = SchemaFactory.createForClass(Exercise);
