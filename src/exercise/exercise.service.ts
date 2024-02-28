@@ -24,6 +24,10 @@ export class ExerciseService {
     return this.exerciseModel.findById(id);
   }
 
+  async findByMuscle(muscle: string) {
+    return await this.exerciseModel.find({ muscle }).exec();
+  }
+
   async updateExerciese(id: string, exercise: UpdateExerciseDto) {
     return this.exerciseModel.findByIdAndUpdate(id, exercise, { new: true });
   }

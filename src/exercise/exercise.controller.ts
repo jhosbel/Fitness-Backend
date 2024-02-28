@@ -26,9 +26,18 @@ export class ExerciseController {
 
   @Get(':id')
   async findOneExercises(@Param('id') id: string) {
+    if (!id) throw new NotFoundException('ID del ejercicio no proporcionada');
     const exercise = await this.exerciseService.findOneExercise(id);
     if (!exercise) throw new NotFoundException('Ejercicio no encontrado');
     return exercise;
+  }
+
+  @Get('by-muscle/:muscle')
+  async findByMuscle(@Param('muscle') muscle: string) {
+    if (!muscle) throw new NotFoundException('Tipo de musculo no encontrado');
+    const muscles = await this.exerciseService.findByMuscle(muscle);
+    if (!muscles.length) throw new NotFoundException('Musculo no encontrado');
+    return muscles;
   }
 
   @Post()
