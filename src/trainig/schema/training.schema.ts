@@ -15,6 +15,7 @@ export class Training {
       muscle: String,
       equipment: String,
       series: String,
+      reps: Number,
       weightType: String,
       weight: Number,
       breakTime: Number,
@@ -28,6 +29,7 @@ export class Training {
     muscle: string;
     equipment: string;
     series: number;
+    reps: number;
     weightType: string;
     weight: number;
     breakTime: number;

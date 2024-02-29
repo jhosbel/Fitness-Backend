@@ -6,6 +6,10 @@ class ExerciseInTrainingDto {
   @IsOptional()
   readonly series: string;
 
+  @IsNumber()
+  @IsOptional()
+  readonly reps: string;
+
   @IsString()
   @IsOptional()
   readonly weightType: string;

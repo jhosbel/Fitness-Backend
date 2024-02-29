@@ -19,6 +19,9 @@ class ExerciseDataListDto {
   @IsNumber()
   readonly series: number;
 
+  @IsNumber()
+  readonly reps: number;
+
   @IsString()
   readonly weightType: string;
 

@@ -20,6 +20,7 @@ export class TrainingList {
         equipment: { type: String },
         image: { type: String },
         series: { type: Number },
+        reps: { type: Number, required: true },
         weightType: { type: String },
         weight: { type: Number },
         breakTime: { type: Number },
