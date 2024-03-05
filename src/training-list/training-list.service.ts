@@ -12,12 +12,12 @@ export class TrainingListService {
     private trainingListModel: Model<TrainingList>,
   ) {}
 
-  findAllTrainingList() {
+  async findAllTrainingList() {
     return this.trainingListModel.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} trainingList`;
+  async findOneTrainingList(id: string) {
+    return await this.trainingListModel.findById(id);
   }
 
   async createTrainingList(createTrainingListDto: CreateTrainingListDto) {
