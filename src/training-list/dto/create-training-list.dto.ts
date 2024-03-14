@@ -1,4 +1,4 @@
-import { IsString, IsNumber } from 'class-validator';
+import { IsString, IsNumber, IsNotEmpty } from 'class-validator';
 
 class ExerciseDataListDto {
   @IsString()
@@ -43,4 +43,12 @@ export class CreateTrainingListDto {
   title: string;
 
   exercises: ExerciseDataListDto[];
+
+  @IsString()
+  @IsNotEmpty()
+  userId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  userEmail: string;
 }

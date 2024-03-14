@@ -11,7 +11,10 @@ import {
 } from '@nestjs/common';
 import { TrainigService } from './training.service';
 import { CreateTrainigDto } from './dto/create-training.dto';
+import { Auth } from '../auth/decorators/auth.decorator';
+import { Role } from '../common/enums/rol.enum';
 
+@Auth(Role.USER)
 @Controller('training')
 export class TrainigController {
   constructor(private readonly trainigService: TrainigService) {}

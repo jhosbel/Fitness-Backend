@@ -6,6 +6,7 @@ import {
   TrainingList,
   TrainingListSchema,
 } from './schema/training-list.schema';
+import { Users, UsersSchema } from '../users/schema/users.schema';
 
 @Module({
   imports: [
@@ -13,6 +14,10 @@ import {
       {
         name: TrainingList.name,
         schema: TrainingListSchema,
+      },
+      {
+        name: Users.name,
+        schema: UsersSchema,
       },
     ]),
   ],

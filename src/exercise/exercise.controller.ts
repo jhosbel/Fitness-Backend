@@ -13,7 +13,10 @@ import {
 import { ExerciseService } from './exercise.service';
 import { CreateExerciseDto } from 'src/exercise/dto/create-exercise.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Auth } from '../auth/decorators/auth.decorator';
+import { Role } from '../common/enums/rol.enum';
 
+@Auth(Role.ADMIN)
 @ApiTags('Peticiones para Ejercicios')
 @Controller('exercise')
 export class ExerciseController {

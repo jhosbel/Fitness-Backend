@@ -1,4 +1,45 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateTrainingListDto } from './create-training-list.dto';
+import { IsNumber, IsString } from 'class-validator';
 
-export class UpdateTrainingListDto extends PartialType(CreateTrainingListDto) {}
+class ExerciseDataListDto {
+  @IsString()
+  id: string;
+
+  @IsString()
+  name: string;
+
+  @IsString()
+  muscle: string;
+
+  @IsString()
+  equipment: string;
+
+  @IsString()
+  image: string;
+
+  @IsNumber()
+  series: number;
+
+  @IsNumber()
+  reps: number;
+
+  @IsString()
+  weightType: string;
+
+  @IsNumber()
+  weight: string;
+
+  @IsNumber()
+  breakTime: string;
+
+  @IsString()
+  breakTimeType: string;
+
+  @IsString()
+  note: string;
+}
+export class UpdateTrainingListDto {
+  @IsString()
+  title: string;
+
+  exercises: ExerciseDataListDto[];
+}

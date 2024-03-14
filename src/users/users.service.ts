@@ -14,12 +14,20 @@ export class UsersService {
     return newUsers.save();
   }
 
-  findAll() {
-    return `This action returns all users`;
+  findOneByEmail(email: string) {
+    return this.usersModel.findOne({ email }).populate(['trainingList']);
   }
 
-  findOneByEmail(email: string) {
-    return this.usersModel.findOne({ email });
+  //hacer esto con TypeORM
+  /* findByEmailWithPassword(email: string) {
+    return this.usersModel.findOne({
+      where: { email },
+      onselect: ['id', 'name', 'email', 'password', 'role'],
+    });
+  } */
+
+  findAll() {
+    return this.usersModel.find().populate(['trainingList']);
   }
 
   /* findOne(id: number) {
