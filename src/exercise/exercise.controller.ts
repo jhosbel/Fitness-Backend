@@ -16,17 +16,18 @@ import { ApiTags } from '@nestjs/swagger';
 import { Auth } from '../auth/decorators/auth.decorator';
 import { Role } from '../common/enums/rol.enum';
 
-@Auth(Role.ADMIN)
 @ApiTags('Peticiones para Ejercicios')
 @Controller('exercise')
 export class ExerciseController {
   constructor(private exerciseService: ExerciseService) {}
 
+  @Auth(Role.USER)
   @Get()
   findAllExercises() {
     return this.exerciseService.findAllExercise();
   }
 
+  @Auth(Role.USER)
   @Get(':id')
   async findOneExercises(@Param('id') id: string) {
     if (!id) throw new NotFoundException('ID del ejercicio no proporcionada');
@@ -35,6 +36,7 @@ export class ExerciseController {
     return exercise;
   }
 
+  @Auth(Role.USER)
   @Get('by-muscle/:muscle')
   async findByMuscle(@Param('muscle') muscle: string) {
     if (!muscle) throw new NotFoundException('Tipo de musculo no encontrado');
@@ -43,6 +45,7 @@ export class ExerciseController {
     return muscles;
   }
 
+  @Auth(Role.ADMIN)
   @Post()
   async createExercise(@Body() body: CreateExerciseDto) {
     try {
@@ -55,6 +58,7 @@ export class ExerciseController {
     }
   }
 
+  @Auth(Role.ADMIN)
   @Put(':id')
   async updateExercise(@Param('id') id: string, @Body() body: any) {
     const exercise = await this.exerciseService.updateExerciese(id, body);
@@ -62,6 +66,7 @@ export class ExerciseController {
     return exercise;
   }
 
+  @Auth(Role.ADMIN)
   @Delete(':id')
   @HttpCode(204)
   async deleteExercise(@Param('id') id: string) {

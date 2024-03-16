@@ -8,15 +8,19 @@ import {
 } from '@nestjs/common';
 import { CalendarDataService } from './calendar-data.service';
 import { CreateCalendarDataDto } from './dto/create-calendar-data.dto';
+import { ActiveUser } from 'src/common/decorators/active-user.decorator';
+import { Auth } from 'src/auth/decorators/auth.decorator';
+import { Role } from 'src/common/enums/rol.enum';
 /* import { UpdateCalendarDataDto } from './dto/update-calendar-data.dto'; */
 
+@Auth(Role.USER)
 @Controller('calendar-data')
 export class CalendarDataController {
   constructor(private readonly calendarDataService: CalendarDataService) {}
 
   @Get()
-  async findAllCalendarData() {
-    return this.calendarDataService.findAllCalendarData();
+  async findAllCalendarData(@ActiveUser() user: any) {
+    return this.calendarDataService.findAllCalendarDataById(user);
   }
 
   @Get(':id')

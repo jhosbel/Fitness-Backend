@@ -22,6 +22,10 @@ export class TrainingListService {
     private userModel: Model<Users>,
   ) {}
 
+  /* async findAllTrainingList() {
+    return this.trainingListModel.find();
+  } */
+
   async findAllTrainingListByUserId(user: UserActiveInterface) {
     if (user.role === Role.ADMIN) {
       return await this.trainingListModel.find();

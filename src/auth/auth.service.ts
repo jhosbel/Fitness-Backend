@@ -42,13 +42,18 @@ export class AuthService {
       throw new UnauthorizedException('Contraseña invalida');
     }
 
-    const payload = { email: user.email, role: user.role };
+    const payload = {
+      email: user.email,
+      role: user.role,
+      id: user._id.toString(),
+    };
 
     const token = await this.jwtService.signAsync(payload);
 
     return {
       token,
       email,
+      id: user._id.toString(),
     };
   }
 

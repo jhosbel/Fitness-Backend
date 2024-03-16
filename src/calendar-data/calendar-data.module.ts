@@ -6,6 +6,7 @@ import {
   CalendarData,
   CalendarDataSchema,
 } from './schema/calendar-data.schema';
+import { Users, UsersSchema } from 'src/users/schema/users.schema';
 
 @Module({
   imports: [
@@ -13,6 +14,10 @@ import {
       {
         name: CalendarData.name,
         schema: CalendarDataSchema,
+      },
+      {
+        name: Users.name,
+        schema: UsersSchema,
       },
     ]),
   ],

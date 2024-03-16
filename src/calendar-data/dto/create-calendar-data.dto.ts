@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateCalendarDataDto {
   @IsString()
@@ -9,6 +9,14 @@ export class CreateCalendarDataDto {
 
   @IsString()
   readonly start: string;
+
+  @IsString()
+  @IsNotEmpty()
+  userId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  userEmail: string;
 }
 
 export class CalendaDataListDto {
