@@ -6,10 +6,14 @@ import { TrainingListModule } from './training-list/training-list.module';
 import { CalendarDataModule } from './calendar-data/calendar-data.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/TrainingApp'),
+    ConfigModule.forRoot({
+      envFilePath: ['.env'],
+    }),
+    MongooseModule.forRoot(process.env.MONGODB_CONNECTION),
     ExerciseModule,
     TrainigModule,
     TrainingListModule,

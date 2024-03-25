@@ -54,6 +54,7 @@ export class AuthService {
       token,
       email,
       id: user._id.toString(),
+      role: user.role,
     };
   }
 
