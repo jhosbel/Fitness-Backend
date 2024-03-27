@@ -3,6 +3,7 @@ import { Role } from '../../common/enums/rol.enum';
 import { TrainingList } from 'src/training-list/schema/training-list.schema';
 import mongoose from 'mongoose';
 import { CalendarData } from 'src/calendar-data/schema/calendar-data.schema';
+import { UserConfig } from 'src/user-config/schema/user-config.schema';
 
 @Schema({
   timestamps: true,
@@ -43,6 +44,11 @@ export class Users {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'CalendarData' }],
   })
   calendarData: CalendarData[];
+
+  @Prop({
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UserConfig' }],
+  })
+  userConfig: UserConfig;
 }
 
 export const UsersSchema = SchemaFactory.createForClass(Users);

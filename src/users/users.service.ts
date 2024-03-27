@@ -17,7 +17,7 @@ export class UsersService {
   findOneByEmail(email: string) {
     return this.usersModel
       .findOne({ email })
-      .populate(['trainingList', 'calendarData']);
+      .populate(['trainingList', 'calendarData', 'userConfig']);
   }
 
   //hacer esto con TypeORM
@@ -29,7 +29,9 @@ export class UsersService {
   } */
 
   findAll() {
-    return this.usersModel.find().populate(['trainingList', 'calendarData']);
+    return this.usersModel
+      .find()
+      .populate(['trainingList', 'calendarData', 'userConfig']);
   }
 
   /* findOne(id: number) {
