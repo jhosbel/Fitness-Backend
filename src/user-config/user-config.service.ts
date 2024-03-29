@@ -30,8 +30,8 @@ export class UserConfigService {
     return `This action returns all userConfig`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} userConfig`;
+  findOneUserConfig(id: string) {
+    return this.userConfigModel.findById(id);
   }
 
   updateUserConfig(id: string, updateUserConfigDto: UpdateUserConfigDto) {

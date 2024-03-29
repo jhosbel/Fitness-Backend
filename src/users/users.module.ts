@@ -3,9 +3,11 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Users, UsersSchema } from './schema/users.schema';
+import { UserConfigModule } from 'src/user-config/user-config.module';
 
 @Module({
   imports: [
+    UserConfigModule,
     MongooseModule.forFeature([
       {
         name: Users.name,

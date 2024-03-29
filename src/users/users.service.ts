@@ -3,15 +3,27 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Users } from './schema/users.schema';
 import { Model } from 'mongoose';
-/* import { UpdateUserDto } from './dto/update-user.dto'; */
+import { UpdateUserDto } from './dto/update-user.dto';
+import { UserActiveInterface } from 'src/common/interfaces/user-active.interface';
+import { UserConfigService } from 'src/user-config/user-config.service';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(Users.name) private usersModel: Model<Users>) {}
+  constructor(
+    @InjectModel(Users.name) private usersModel: Model<Users>,
+    private userConfigService: UserConfigService,
+  ) {}
 
-  create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
     const newUsers = new this.usersModel(createUserDto);
-    return newUsers.save();
+    const savedUser = await newUsers.save();
+    await this.userConfigService.createUserConfig({
+      userId: savedUser.id,
+      age: '',
+      height: '',
+      weight: '',
+    });
+    return savedUser;
   }
 
   findOneByEmail(email: string) {
@@ -34,15 +46,27 @@ export class UsersService {
       .populate(['trainingList', 'calendarData', 'userConfig']);
   }
 
-  /* findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findOneUser(id: string) {
+    return this.usersModel
+      .findById(id)
+      .populate(['trainingList', 'calendarData', 'userConfig']);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  updateUser(id: string, updateUserDto: UpdateUserDto) {
+    return this.usersModel.findByIdAndUpdate(id, updateUserDto, { new: true });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
-  } */
+  async updateUserPassword(userId: string, newPassword: string) {
+    const user = await this.usersModel.findById(userId);
+    if (!user) {
+      throw new Error('Usuario no encontrado');
+    }
+    user.password = newPassword;
+    await user.save();
+  }
+
+  async removeUser(id: string, user: UserActiveInterface) {
+    await this.findOneByEmail(user.email);
+    return this.usersModel.findByIdAndDelete(id);
+  }
 }

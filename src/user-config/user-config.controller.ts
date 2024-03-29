@@ -13,6 +13,8 @@ import { CreateUserConfigDto } from './dto/create-user-config.dto';
 import { UpdateUserConfigDto } from './dto/update-user-config.dto';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { Role } from 'src/common/enums/rol.enum';
+/* import { ActiveUser } from 'src/common/decorators/active-user.decorator';
+import { UserActiveInterface } from 'src/common/interfaces/user-active.interface'; */
 
 @Controller('user-config')
 export class UserConfigController {
@@ -37,11 +39,13 @@ export class UserConfigController {
     return this.userConfigService.findAll();
   }
 
+  @Auth(Role.USER)
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.userConfigService.findOne(+id);
+    return this.userConfigService.findOneUserConfig(id);
   }
 
+  @Auth(Role.USER)
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -50,6 +54,7 @@ export class UserConfigController {
     return this.userConfigService.updateUserConfig(id, updateUserConfigDto);
   }
 
+  @Auth(Role.USER)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.userConfigService.remove(+id);

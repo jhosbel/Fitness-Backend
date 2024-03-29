@@ -6,6 +6,7 @@ import { Role } from '../common/enums/rol.enum';
 import { Auth } from './decorators/auth.decorator';
 import { ActiveUser } from 'src/common/decorators/active-user.decorator';
 import { UserActiveInterface } from 'src/common/interfaces/user-active.interface';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 /* interface RequestWithUser extends Request {
   user: {
@@ -45,5 +46,12 @@ export class AuthController {
   @Auth(Role.USER)
   profile(@ActiveUser() user: UserActiveInterface) {
     return this.authService.profile(user);
+  }
+
+  @Post('change-password')
+  @Auth(Role.USER)
+  async changePassword(@Body() changePasswordDto: ChangePasswordDto) {
+    await this.authService.changePassword(changePasswordDto);
+    return { message: 'Contraseña cambiada correctamente' };
   }
 }
