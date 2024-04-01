@@ -14,7 +14,9 @@ import { UserConfigModule } from './user-config/user-config.module';
     ConfigModule.forRoot({
       envFilePath: ['.env'],
     }),
-    MongooseModule.forRoot(process.env.MONGODB_CONNECTION),
+    MongooseModule.forRoot(
+      `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@${process.env.MONGODB_CLUSTER}.srnxyu2.mongodb.net/${process.env.MONGODB_DATABASE}?retryWrites=true&w=majority&appName=Cluster0`,
+    ),
     ExerciseModule,
     TrainigModule,
     TrainingListModule,
