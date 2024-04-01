@@ -3,12 +3,12 @@ import {
   Get,
   Post,
   Delete,
-  Put,
   Body,
   Param,
   ConflictException,
   NotFoundException,
   HttpCode,
+  Patch,
 } from '@nestjs/common';
 import { ExerciseService } from './exercise.service';
 import { CreateExerciseDto } from 'src/exercise/dto/create-exercise.dto';
@@ -59,7 +59,7 @@ export class ExerciseController {
   }
 
   @Auth(Role.ADMIN)
-  @Put(':id')
+  @Patch(':id')
   async updateExercise(@Param('id') id: string, @Body() body: any) {
     const exercise = await this.exerciseService.updateExerciese(id, body);
     if (!exercise) throw new NotFoundException('Ejercicio no encontrado');
