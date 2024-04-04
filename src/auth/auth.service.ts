@@ -17,11 +17,12 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async register({ name, email, password }: RegisterDto) {
+  async register({ name, email, password, role }: RegisterDto) {
     try {
       await this.usersService.create({
         name,
         email,
+        role,
         password: await bcrypt.hash(password, 10),
       });
       return { name, email };
