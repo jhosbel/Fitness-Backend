@@ -1,3 +1,3 @@
 export const jwtConstants = {
-  secret: process.env.JWT_SECRET, //configurar en .env para colocar aca el secret
+  secret: 'configurar en .env para colocar aca el secret', //configurar en .env para colocar aca el secret // process.env.JWT_SECRET
 };

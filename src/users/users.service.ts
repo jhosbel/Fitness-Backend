@@ -29,7 +29,7 @@ export class UsersService {
   findOneByEmail(email: string) {
     return this.usersModel
       .findOne({ email })
-      .populate(['trainingList', 'calendarData', 'userConfig']);
+      .populate(['trainingList', 'calendarData', 'userConfig', 'friends']);
   }
 
   //hacer esto con TypeORM
@@ -43,13 +43,21 @@ export class UsersService {
   findAll() {
     return this.usersModel
       .find()
-      .populate(['trainingList', 'calendarData', 'userConfig']);
+      .populate(['trainingList', 'calendarData', 'userConfig', 'friends']);
+  }
+
+  findCoachByRole(role: string) {
+    return this.usersModel.find({ role });
+  }
+
+  findUserByRole(role: string) {
+    return this.usersModel.find({ role });
   }
 
   findOneUser(id: string) {
     return this.usersModel
       .findById(id)
-      .populate(['trainingList', 'calendarData', 'userConfig']);
+      .populate(['trainingList', 'calendarData', 'userConfig', 'friends']);
   }
 
   updateUser(id: string, updateUserDto: UpdateUserDto) {
