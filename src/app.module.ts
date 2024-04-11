@@ -10,6 +10,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UserConfigModule } from './user-config/user-config.module';
 import { FriendsModule } from './friends/friends.module';
 import { NotificationModule } from './notification/notification.module';
+import { GatewayModule } from './websockets/websocket.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { NotificationModule } from './notification/notification.module';
     UserConfigModule,
     FriendsModule,
     NotificationModule,
+    GatewayModule,
   ],
 })
 export class AppModule {}

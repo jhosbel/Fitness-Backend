@@ -9,7 +9,9 @@ export class NotificationController {
 
   @Post()
   create(@Body() createNotificationDto: CreateNotificationDto) {
-    return this.notificationService.createNotification(createNotificationDto);
+    const userId = createNotificationDto.userId;
+    const message = createNotificationDto.message;
+    return this.notificationService.createNotification(userId, message);
   }
 
   @Get()
@@ -17,9 +19,14 @@ export class NotificationController {
     return this.notificationService.findAll();
   }
 
-  @Get(':id')
+  /* @Get(':id')
   findOne(@Param('id') id: string) {
     return this.notificationService.findOne(+id);
+  } */
+
+  @Get(':id')
+  findOneNotification(@Param('id') id: string) {
+    return this.notificationService.findNotificationsByUserId(id);
   }
 
   /* @Patch(':id')

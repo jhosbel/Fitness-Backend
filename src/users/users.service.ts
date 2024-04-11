@@ -14,6 +14,11 @@ export class UsersService {
     private userConfigService: UserConfigService,
   ) {}
 
+  async sendNotification(userId: string, message: string) {
+    // Aquí puedes implementar la lógica para enviar la notificación al usuario
+    console.log(`Notificando al usuario ${userId}: ${message}`);
+  }
+
   async create(createUserDto: CreateUserDto) {
     const newUsers = new this.usersModel(createUserDto);
     const savedUser = await newUsers.save();

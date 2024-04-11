@@ -4,7 +4,7 @@ import { TrainingList } from 'src/training-list/schema/training-list.schema';
 import mongoose from 'mongoose';
 import { CalendarData } from 'src/calendar-data/schema/calendar-data.schema';
 import { UserConfig } from 'src/user-config/schema/user-config.schema';
-/* import { Friends } from 'src/friends/schema/friends.schema'; */
+import { Friends } from 'src/friends/schema/friends.schema';
 
 @Schema({
   timestamps: true,
@@ -56,10 +56,10 @@ export class Users {
   })
   friendList: string[];
 
-  /* @Prop({
+  @Prop({
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Friends' }],
   })
-  friends: Friends[]; */
+  friends: Friends[];
 }
 
 export const UsersSchema = SchemaFactory.createForClass(Users);

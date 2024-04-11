@@ -1,23 +1,29 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { FriendsService } from './friends.service';
 import { CreateFriendDto } from './dto/create-friend.dto';
+import { WebsocketGateway } from 'src/websockets/websocket.gateway';
+import { NotificationService } from 'src/notification/notification.service';
 /* import { UpdateFriendDto } from './dto/update-friend.dto'; */
 
 @Controller('friends')
 export class FriendsController {
-  constructor(private readonly friendsService: FriendsService) {}
+  constructor(
+    private readonly friendsService: FriendsService,
+    private readonly notificationService: NotificationService,
+    private readonly websocketGateway: WebsocketGateway,
+  ) {}
 
   @Post()
-  create(@Body() createFriendDto: CreateFriendDto) {
-    return this.friendsService.createFriend(createFriendDto);
+  async create(@Body() createFriendDto: CreateFriendDto) {
+    const friend = await this.friendsService.createFriend(createFriendDto);
+
+    const message = 'prueba numero 1000';
+    const recipientId = createFriendDto.recipientId.toString();
+    await this.notificationService.createNotification(recipientId, message);
+    /* const notificationData = { recipientId, message };
+    this.websocketGateway.sendNotificationToUser(notificationData); */
+
+    return friend;
   }
 
   @Get()

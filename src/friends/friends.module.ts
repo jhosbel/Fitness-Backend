@@ -4,6 +4,8 @@ import { FriendsController } from './friends.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Friends, FriendsSchema } from './schema/friends.schema';
 import { Users, UsersSchema } from 'src/users/schema/users.schema';
+import { WebsocketGateway } from 'src/websockets/websocket.gateway';
+import { NotificationModule } from 'src/notification/notification.module';
 
 @Module({
   imports: [
@@ -17,9 +19,10 @@ import { Users, UsersSchema } from 'src/users/schema/users.schema';
         schema: UsersSchema,
       },
     ]),
+    NotificationModule,
   ],
   controllers: [FriendsController],
-  providers: [FriendsService],
+  providers: [FriendsService, WebsocketGateway],
   exports: [FriendsService],
 })
 export class FriendsModule {}

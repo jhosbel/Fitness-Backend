@@ -5,8 +5,9 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Users } from 'src/users/schema/users.schema';
 import { Status } from 'src/common/enums/status.enum';
-import { NotificationService } from 'src/notification/notification.service';
-import { CreateNotificationDto } from 'src/notification/dto/create-notification.dto';
+import { WebsocketGateway } from 'src/websockets/websocket.gateway';
+/* import { NotificationService } from 'src/notification/notification.service'; */
+/* import { CreateNotificationDto } from 'src/notification/dto/create-notification.dto'; */
 /* import { UpdateFriendDto } from './dto/update-friend.dto'; */
 
 @Injectable()
@@ -14,18 +15,23 @@ export class FriendsService {
   constructor(
     @InjectModel(Friends.name) private friendsModel: Model<Friends>,
     @InjectModel(Users.name) private userModel: Model<Users>,
-    private readonly notificationService: NotificationService,
+    private webSocketGateway: WebsocketGateway,
   ) {}
 
   async createFriend(createFriendDto: CreateFriendDto) {
     const newFriend = new this.friendsModel(createFriendDto);
     await newFriend.save();
     //Notificar al destinatario
-    const msj = 'Has recibido una solicitud de amistad';
+    const msj = 'prueba numero 1000';
     const recipientId = createFriendDto.recipientId.toString();
-    console.log(recipientId);
-    console.log(msj);
-    await this.notificationService.createNotification(CreateNotificationDto);
+    /* console.log(recipientId);
+    console.log(msj); */
+    this.webSocketGateway.server.emit(recipientId, {
+      message: msj,
+    });
+    /* await this.userService.sendNotification(recipientId, msj); */
+
+    return newFriend;
   }
 
   async acceptFriendRequest(requestId: string, userId: string) {
