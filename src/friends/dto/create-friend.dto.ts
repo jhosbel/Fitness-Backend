@@ -6,6 +6,9 @@ export class CreateFriendDto {
   senderId: string;
   @IsString()
   @IsNotEmpty()
+  senderName: string;
+  @IsString()
+  @IsNotEmpty()
   recipientId: string;
   @IsString()
   @IsNotEmpty()

@@ -11,6 +11,10 @@ export class Friends {
   })
   senderId: string;
   @Prop({
+    type: [{ type: String, ref: 'Users.name' }],
+  })
+  senderName: string;
+  @Prop({
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Users' }],
   })
   recipientId: string;

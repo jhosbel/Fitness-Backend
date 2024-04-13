@@ -17,7 +17,7 @@ export class FriendsController {
   async create(@Body() createFriendDto: CreateFriendDto) {
     const friend = await this.friendsService.createFriend(createFriendDto);
 
-    const message = 'prueba numero 1000';
+    const message = 'Te ah enviado una solicitud de amistad';
     const recipientId = createFriendDto.recipientId.toString();
     await this.notificationService.createNotification(recipientId, message);
     /* const notificationData = { recipientId, message };
@@ -34,6 +34,11 @@ export class FriendsController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.friendsService.findOne(id);
+  }
+
+  @Get('recipient/:recipientId')
+  async findFrinedsByRecipientId(@Param('recipientId') recipientId: string) {
+    return this.friendsService.findFriendsByRecipientId(recipientId);
   }
 
   @Post(':requestId/accept/:userId')

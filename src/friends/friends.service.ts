@@ -21,16 +21,11 @@ export class FriendsService {
   async createFriend(createFriendDto: CreateFriendDto) {
     const newFriend = new this.friendsModel(createFriendDto);
     await newFriend.save();
-    //Notificar al destinatario
-    const msj = 'prueba numero 1000';
+    const msj = 1;
     const recipientId = createFriendDto.recipientId.toString();
-    /* console.log(recipientId);
-    console.log(msj); */
     this.webSocketGateway.server.emit(recipientId, {
       message: msj,
     });
-    /* await this.userService.sendNotification(recipientId, msj); */
-
     return newFriend;
   }
 
@@ -68,6 +63,10 @@ export class FriendsService {
 
   findOne(id: string) {
     return this.friendsModel.findById(id);
+  }
+
+  findFriendsByRecipientId(recipientId: string) {
+    return this.friendsModel.find({ recipientId });
   }
 
   /* update(id: number, updateFriendDto: UpdateFriendDto) {
