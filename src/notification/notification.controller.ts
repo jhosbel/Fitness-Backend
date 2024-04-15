@@ -14,6 +14,12 @@ export class NotificationController {
     return this.notificationService.createNotification(userId, message);
   }
 
+  @Post(':id/markAsRead')
+  async markReadTrue(@Param('id') id: string) {
+    await this.notificationService.markAsRead(id);
+    return { message: 'Notification marked as read successfully' };
+  }
+
   @Get()
   findAll() {
     return this.notificationService.findAll();
