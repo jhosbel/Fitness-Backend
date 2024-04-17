@@ -6,6 +6,7 @@ import { Model } from 'mongoose';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserActiveInterface } from 'src/common/interfaces/user-active.interface';
 import { UserConfigService } from 'src/user-config/user-config.service';
+import { Role } from 'src/common/enums/rol.enum';
 
 @Injectable()
 export class UsersService {
@@ -51,12 +52,16 @@ export class UsersService {
       .populate(['trainingList', 'calendarData', 'userConfig', 'friends']);
   }
 
-  findCoachByRole(role: string) {
+  /* findCoachByRole(role: string) {
     return this.usersModel.find({ role });
   }
 
   findUserByRole(role: string) {
     return this.usersModel.find({ role });
+  } */
+
+  async findAllUsersAndCoach() {
+    return this.usersModel.find({ role: { $ne: Role.ADMIN } });
   }
 
   findOneUser(id: string) {

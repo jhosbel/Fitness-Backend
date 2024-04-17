@@ -32,7 +32,7 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Auth(Role.USER)
+  /* @Auth(Role.USER)
   @Get('typecoach/:role')
   findCoachByRole(@Param('role') role: string) {
     if (role === Role.USER) throw new NotFoundException('No estas autorizado');
@@ -45,6 +45,18 @@ export class UsersController {
   findUserByRole(@Param('role') role: string) {
     if (role === Role.ADMIN) throw new NotFoundException('No estas autorizado');
     return this.usersService.findCoachByRole(role);
+  } */
+
+  @Auth(Role.USER)
+  @Get('allforusers')
+  findAllExceptAdmin() {
+    return this.usersService.findAllUsersAndCoach();
+  }
+
+  @Auth(Role.COACH)
+  @Get('allforcoach')
+  findAllForCoach() {
+    return this.usersService.findAllUsersAndCoach();
   }
 
   @Auth(Role.USER)

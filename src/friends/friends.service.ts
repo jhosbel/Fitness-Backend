@@ -19,11 +19,19 @@ export class FriendsService {
   ) {}
 
   async createFriend(createFriendDto: CreateFriendDto) {
+    const { senderId, recipientId } = createFriendDto;
+    //das
+    const sender = await this.userModel.findById(senderId);
+
+    if (sender.friendList.includes(recipientId)) {
+      throw new Error('El destinatario ya está en la lista de amigos');
+    }
+
     const newFriend = new this.friendsModel(createFriendDto);
     await newFriend.save();
     const msj = 1;
-    const recipientId = createFriendDto.recipientId.toString();
-    this.webSocketGateway.server.emit(recipientId, {
+    const recipientIdNoti = createFriendDto.recipientId.toString();
+    this.webSocketGateway.server.emit(recipientIdNoti, {
       message: msj,
     });
     return newFriend;
