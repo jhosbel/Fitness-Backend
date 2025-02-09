@@ -1,17 +1,20 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { InjectModel } from '@nestjs/mongoose';
-import { Users } from './schema/users.schema';
-import { Model } from 'mongoose';
+import { BadRequestException, Injectable } from '@nestjs/common';
+//import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserActiveInterface } from 'src/common/interfaces/user-active.interface';
-import { UserConfigService } from 'src/user-config/user-config.service';
+//import { UserActiveInterface } from 'src/common/interfaces/user-active.interface';
+//import { UserConfigService } from 'src/user-config/user-config.service';
+import { Users } from './entity/users.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Role } from 'src/common/enums/rol.enum';
+import { UserConfig } from 'src/user-config/entity/user-config.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel(Users.name) private usersModel: Model<Users>,
-    private userConfigService: UserConfigService,
+    @InjectRepository(Users) private userRepository: Repository<Users>,
+    @InjectRepository(UserConfig)
+    private userConfigRepository: Repository<UserConfig>,
   ) {}
 
   async sendNotification(userId: string, message: string) {
@@ -19,22 +22,28 @@ export class UsersService {
     console.log(`Notificando al usuario ${userId}: ${message}`);
   }
 
-  async create(createUserDto: CreateUserDto) {
-    const newUsers = new this.usersModel(createUserDto);
-    const savedUser = await newUsers.save();
-    await this.userConfigService.createUserConfig({
-      userId: savedUser.id,
-      age: '',
-      height: '',
-      weight: '',
-    });
-    return savedUser;
+  async create(userData: Partial<Users>): Promise<Users> {
+    try {
+      const user = this.userRepository.create(userData);
+      const savedUser = await this.userRepository.save(user);
+
+      const userConfig = this.userConfigRepository.create({ user: savedUser });
+      await this.userConfigRepository.save(userConfig);
+
+      savedUser.userConfig = userConfig;
+      await this.userRepository.save(savedUser);
+      return savedUser;
+    } catch (error) {
+      console.error('Error al crear usuario en UsersService:', error);
+      throw new BadRequestException('No se pudo crear el usuario');
+    }
   }
 
   findOneByEmail(email: string) {
-    return this.usersModel
-      .findOne({ email })
-      .populate(['trainingList', 'calendarData', 'userConfig', 'friends']);
+    return this.userRepository.findOne({
+      where: { email },
+      relations: ['trainingList', 'calendarData', 'userConfig', 'friendList'],
+    });
   }
 
   //hacer esto con TypeORM
@@ -46,40 +55,36 @@ export class UsersService {
   } */
 
   findAll() {
-    return this.usersModel
-      .find()
-      .populate(['trainingList', 'calendarData', 'userConfig', 'friends']);
+    return this.userRepository.find({
+      relations: ['trainingList', 'calendarData', 'userConfig', 'friendList'],
+    });
   }
 
-  findCoachByRole(role: string) {
-    return this.usersModel.find({ role });
+  findCoachByRole(role: Role) {
+    return this.userRepository.find({ where: { role } });
   }
 
-  findUserByRole(role: string) {
-    return this.usersModel.find({ role });
+  findUserByRole(role: Role) {
+    return this.userRepository.find({ where: { role } });
   }
 
   findOneUser(id: string) {
-    return this.usersModel
-      .findById(id)
-      .populate(['trainingList', 'calendarData', 'userConfig', 'friends']);
+    return this.userRepository.findOne({
+      where: { id },
+      relations: ['trainingList', 'calendarData', 'userConfig', 'friendList'],
+    });
   }
 
-  updateUser(id: string, updateUserDto: UpdateUserDto) {
-    return this.usersModel.findByIdAndUpdate(id, updateUserDto, { new: true });
+  async updateUser(id: string, updateUserDto: UpdateUserDto) {
+    await this.userRepository.update(id, updateUserDto);
+    return this.userRepository.findOne({ where: { id } });
   }
 
   async updateUserPassword(userId: string, newPassword: string) {
-    const user = await this.usersModel.findById(userId);
-    if (!user) {
-      throw new Error('Usuario no encontrado');
-    }
-    user.password = newPassword;
-    await user.save();
+    await this.userRepository.update(userId, { password: newPassword });
   }
 
-  async removeUser(id: string, user: UserActiveInterface) {
-    await this.findOneByEmail(user.email);
-    return this.usersModel.findByIdAndDelete(id);
+  async removeUser(id: string) {
+    await this.userRepository.delete(id);
   }
 }

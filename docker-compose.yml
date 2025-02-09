@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - "5060:5432"
+    environment:
+      - DATABASE_HOST=127.0.0.1
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root321
+      - POSTGRES_DB=C-Fitness-DB
+    volumes:
+      - ./postgres_data:/var/lib/postgresql    
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin321"
+    ports:
+      - "80:80"
+    depends_on:
+      - postgres

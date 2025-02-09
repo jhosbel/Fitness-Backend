@@ -4,22 +4,21 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { TrainingList } from './schema/training-list.schema';
-import { Model } from 'mongoose';
 import { CreateTrainingListDto } from './dto/create-training-list.dto';
-import { Users } from '../users/schema/users.schema';
 import { UserActiveInterface } from '../common/interfaces/user-active.interface';
 import { Role } from '../common/enums/rol.enum';
 import { UpdateTrainingListDto } from './dto/update-training-list.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { TrainingList } from './entity/training-list.entity';
+import { Users } from 'src/users/entity/users.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class TrainingListService {
   constructor(
-    @InjectModel(TrainingList.name)
-    private trainingListModel: Model<TrainingList>,
-    @InjectModel(Users.name)
-    private userModel: Model<Users>,
+    @InjectRepository(TrainingList)
+    private trainingListRepository: Repository<TrainingList>,
+    @InjectRepository(Users) private userRepository: Repository<Users>,
   ) {}
 
   /* async findAllTrainingList() {
@@ -28,30 +27,41 @@ export class TrainingListService {
 
   async findAllTrainingListByUserId(user: UserActiveInterface) {
     if (user.role === Role.ADMIN) {
-      return await this.trainingListModel.find();
+      return await this.trainingListRepository.find({ relations: ['user'] });
     }
-    return this.trainingListModel.find({ userEmail: user.email });
+    return this.trainingListRepository.find({
+      where: { userEmail: user.email },
+      relations: ['user'],
+    });
   }
 
   async findOneTrainingList(id: string, user: UserActiveInterface) {
-    const list = await this.trainingListModel.findById(id);
+    const list = await this.trainingListRepository.findOne({
+      where: { id },
+      relations: ['user'],
+    });
     if (!list) throw new BadRequestException('Lista no encontrada');
     this.validateOwnership(list, user);
     return list;
   }
 
   async createTrainingList(createTrainingListDto: CreateTrainingListDto) {
-    const findUser = await this.userModel.findById(
-      createTrainingListDto.userId,
-    );
-    if (!findUser) throw new NotFoundException('Usuario no encontrado');
-    const newTrainingList = new this.trainingListModel(createTrainingListDto);
-    const trainingListSaved = await newTrainingList.save();
-    await findUser.updateOne({
-      $push: {
-        trainingList: trainingListSaved._id,
-      },
+    const findUser = await this.userRepository.findOne({
+      where: { id: createTrainingListDto.userId },
     });
+    if (!findUser) throw new NotFoundException('Usuario no encontrado');
+    const newTrainingList = this.trainingListRepository.create(
+      createTrainingListDto,
+    );
+    const trainingListSaved =
+      await this.trainingListRepository.save(newTrainingList);
+
+    findUser.trainingList = [
+      ...(findUser.trainingList || []),
+      trainingListSaved,
+    ];
+    await this.userRepository.save(findUser);
+
     return trainingListSaved;
   }
 
@@ -60,15 +70,15 @@ export class TrainingListService {
     trainingList: UpdateTrainingListDto,
     user: UserActiveInterface,
   ) {
-    await this.findOneTrainingList(id, user);
-    return this.trainingListModel.findByIdAndUpdate(id, trainingList, {
-      new: true,
-    });
+    const existingList = await this.findOneTrainingList(id, user);
+    Object.assign(existingList, trainingList);
+    return this.trainingListRepository.save(existingList);
   }
 
   async deleteOneTrainingList(id: string, user: UserActiveInterface) {
     await this.findOneTrainingList(id, user);
-    return this.trainingListModel.findByIdAndDelete(id);
+    await this.trainingListRepository.delete(id);
+    return { message: 'Lista eliminada correctamente' };
   }
 
   private validateOwnership(date: any, user: UserActiveInterface) {

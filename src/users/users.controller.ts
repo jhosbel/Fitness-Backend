@@ -12,8 +12,8 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ActiveUser } from 'src/common/decorators/active-user.decorator';
-import { UserActiveInterface } from 'src/common/interfaces/user-active.interface';
+/* import { ActiveUser } from 'src/common/decorators/active-user.decorator';
+import { UserActiveInterface } from 'src/common/interfaces/user-active.interface'; */
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { Role } from 'src/common/enums/rol.enum';
 
@@ -35,16 +35,19 @@ export class UsersController {
   @Auth(Role.USER)
   @Get('typecoach/:role')
   findCoachByRole(@Param('role') role: string) {
+    const roleEnum = role as Role;
     if (role === Role.USER) throw new NotFoundException('No estas autorizado');
     if (role === Role.ADMIN) throw new NotFoundException('No estas autorizado');
-    return this.usersService.findCoachByRole(role);
+    return this.usersService.findCoachByRole(roleEnum);
   }
 
   @Auth(Role.COACH)
   @Get('typeuser/:role')
   findUserByRole(@Param('role') role: string) {
+    const roleEnum = role as Role;
+
     if (role === Role.ADMIN) throw new NotFoundException('No estas autorizado');
-    return this.usersService.findCoachByRole(role);
+    return this.usersService.findCoachByRole(roleEnum);
   }
 
   @Auth(Role.USER)
@@ -64,10 +67,10 @@ export class UsersController {
   @HttpCode(204)
   async remove(
     @Param('id') id: string,
-    @ActiveUser() user: UserActiveInterface,
+    //@ActiveUser() user: UserActiveInterface,
   ) {
-    const userDeleted = await this.usersService.removeUser(id, user);
-    if (!userDeleted) throw new NotFoundException('Usuario no encontrado');
+    const userDeleted = await this.usersService.removeUser(id /* , user */);
+    //if (!userDeleted) throw new NotFoundException('Usuario no encontrado');
     return userDeleted;
   }
 }

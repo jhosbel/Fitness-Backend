@@ -27,7 +27,7 @@ export class AuthService {
       });
       return { name, email };
     } catch (error) {
-      if (error.code === 11000) {
+      if (error.code === 23505) {
         throw new BadRequestException('El correo ya existe');
       }
       throw error;
@@ -35,11 +35,21 @@ export class AuthService {
   }
 
   async login({ email, password }: LoginDto) {
+    console.log('Intento de inicio de sesión:', { email, password });
     const user = await this.usersService.findOneByEmail(email);
+    console.log('Usuario encontrado:', user);
     if (!user) {
       throw new UnauthorizedException('Correo invalido');
     }
+
+    if (!user.password) {
+      throw new UnauthorizedException(
+        'Contraseña no configurada para este usuario',
+      );
+    }
+
     const isPasswordValid = await bcrypt.compare(password, user.password);
+    console.log('¿La contraseña es válida?', isPasswordValid);
     if (!isPasswordValid) {
       throw new UnauthorizedException('Contraseña invalida');
     }
@@ -47,7 +57,7 @@ export class AuthService {
     const payload = {
       email: user.email,
       role: user.role,
-      id: user._id.toString(),
+      id: user.id,
       userConfig: user.userConfig,
     };
 
@@ -56,7 +66,7 @@ export class AuthService {
     return {
       token,
       email,
-      id: user._id.toString(),
+      id: user.id,
       role: user.role,
       userConfig: user.userConfig,
     };
@@ -80,9 +90,9 @@ export class AuthService {
   }
 
   async profile({ email, role }: { email: string; role: string }) {
-    /* if (role !== 'admin') {
+    if (role !== 'admin') {
       throw new UnauthorizedException('No estas autorizado');
-    } */
+    }
     return await this.usersService.findOneByEmail(email);
   }
 }

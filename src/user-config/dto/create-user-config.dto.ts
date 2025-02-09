@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsString, IsUUID } from 'class-validator';
 
 export class CreateUserConfigDto {
   @IsString()
@@ -7,6 +7,6 @@ export class CreateUserConfigDto {
   height: string;
   @IsString()
   weight: string;
-  @IsString()
+  @IsUUID()
   userId: string;
 }

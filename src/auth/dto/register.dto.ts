@@ -1,21 +1,20 @@
-import { Transform } from 'class-transformer';
-import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
+/* eslint-disable prettier/prettier */
+import { Role } from 'src/common/enums/rol.enum';
+import { Column, PrimaryGeneratedColumn } from 'typeorm';
 
 export class RegisterDto {
-  @Transform(({ value }) => value.trim())
-  @IsString()
-  @MinLength(4)
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column()
   name: string;
 
-  @IsEmail()
+  @Column({unique: true})
   email: string;
 
-  @Transform(({ value }) => value.trim())
-  @IsString()
-  @MinLength(6)
+  @Column()
   password: string;
 
-  @IsNotEmpty()
-  @IsString()
-  role: string;
+  @Column({ type: 'enum', enum: Role, default: Role.USER })
+  role: Role;
 }

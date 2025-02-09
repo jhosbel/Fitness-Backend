@@ -1,46 +1,69 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserConfigDto } from './dto/create-user-config.dto';
 import { UpdateUserConfigDto } from './dto/update-user-config.dto';
-import { InjectModel } from '@nestjs/mongoose';
-import { UserConfig } from './schema/user-config.schema';
-import { Model } from 'mongoose';
-import { Users } from 'src/users/schema/users.schema';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserConfig } from './entity/user-config.entity';
+import { Users } from 'src/users/entity/users.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserConfigService {
   constructor(
-    @InjectModel(UserConfig.name) private userConfigModel: Model<UserConfig>,
-    @InjectModel(Users.name) private userModel: Model<Users>,
+    @InjectRepository(UserConfig)
+    private userConfigRepository: Repository<UserConfig>,
+    @InjectRepository(Users) private userRepository: Repository<Users>,
   ) {}
 
   async createUserConfig(createUserConfigDto: CreateUserConfigDto) {
-    const findUser = await this.userModel.findById(createUserConfigDto.userId);
-    if (!findUser) throw new NotFoundException('Usuario no encontrado');
-    const newUserConfig = new this.userConfigModel(createUserConfigDto);
-    const savedUserConfig = await newUserConfig.save();
-    await findUser.updateOne({
-      $push: {
-        userConfig: savedUserConfig._id,
-      },
+    const user = await this.userRepository.findOne({
+      where: { id: createUserConfigDto.userId },
+      relations: ['userConfig'],
     });
-    return savedUserConfig;
+    if (!user) throw new NotFoundException('Usuario no encontrado');
+
+    const newUserConfig = this.userConfigRepository.create();
+    await this.userConfigRepository.save(newUserConfig);
+
+    user.userConfig = newUserConfig;
+    await this.userRepository.save(user);
+    return newUserConfig;
   }
 
-  findAll() {
-    return `This action returns all userConfig`;
+  async findAll() {
+    return await this.userConfigRepository.find();
   }
 
-  findOneUserConfig(id: string) {
-    return this.userConfigModel.findById(id);
-  }
-
-  updateUserConfig(id: string, updateUserConfigDto: UpdateUserConfigDto) {
-    return this.userConfigModel.findByIdAndUpdate(id, updateUserConfigDto, {
-      new: true,
+  async findOneUserConfig(id: string) {
+    const userConfig = await this.userConfigRepository.findOne({
+      where: { id },
     });
+
+    if (!userConfig)
+      throw new NotFoundException('Configuración de usuario no encontrada');
+    return userConfig;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} userConfig`;
+  async updateUserConfig(id: string, updateUserConfigDto: UpdateUserConfigDto) {
+    const userConfig = await this.userConfigRepository.preload({
+      id,
+      ...updateUserConfigDto,
+    });
+
+    if (!userConfig)
+      throw new NotFoundException('Configuración de usuario no encontrada');
+
+    return await this.userConfigRepository.save(userConfig);
+  }
+
+  async remove(id: string) {
+    const userConfig = await this.userConfigRepository.findOne({
+      where: { id },
+    });
+
+    if (!userConfig)
+      throw new NotFoundException('Configuración de usuario no encontrada');
+
+    await this.userConfigRepository.remove(userConfig);
+    return { message: 'Configuración eliminada exitosamente' };
   }
 }

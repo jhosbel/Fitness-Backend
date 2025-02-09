@@ -26,10 +26,10 @@ class ExerciseDataListDto {
   readonly weightType: string;
 
   @IsNumber()
-  readonly weight: string;
+  readonly weight: number;
 
   @IsNumber()
-  readonly breakTime: string;
+  readonly breakTime: number;
 
   @IsString()
   readonly breakTimeType: string;

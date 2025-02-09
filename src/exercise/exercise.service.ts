@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateExerciseDto } from 'src/exercise/dto/create-exercise.dto';
 import { UpdateExerciseDto } from 'src/exercise/dto/update-exercise.dto';
-import { Exercise } from 'src/exercise/schema/exercise.schema';
-
+import { Exercise } from './entity/exercise.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 @Injectable()
 export class ExerciseService {
   constructor(
-    @InjectModel(Exercise.name) private exerciseModel: Model<Exercise>,
+    @InjectRepository(Exercise) private exerciseModel: Model<Exercise>,
   ) {}
 
   findAllExercise() {

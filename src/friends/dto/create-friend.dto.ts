@@ -1,16 +1,20 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { Status } from 'src/common/enums/status.enum';
 
 export class CreateFriendDto {
-  @IsString()
+  @IsUUID()
   @IsNotEmpty()
   senderId: string;
+
   @IsString()
   @IsNotEmpty()
   senderName: string;
-  @IsString()
+
+  @IsUUID()
   @IsNotEmpty()
   recipientId: string;
-  @IsString()
+
+  @IsEnum(Status)
   @IsNotEmpty()
-  status: string;
+  status: Status;
 }

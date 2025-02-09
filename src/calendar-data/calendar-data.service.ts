@@ -3,22 +3,21 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { CalendarData } from './schema/calendar-data.schema';
 import { Model } from 'mongoose';
 import { CreateCalendarDataDto } from './dto/create-calendar-data.dto';
-import { Users } from '../users/schema/users.schema';
 import { UserActiveInterface } from 'src/common/interfaces/user-active.interface';
 import { Role } from '../common/enums/rol.enum';
+import { InjectRepository } from '@nestjs/typeorm';
+import { CalendarData } from './entity/calendar-data.entity';
+import { Users } from 'src/users/entity/users.entity';
 /* import { UpdateCalendarDataDto } from './dto/update-calendar-data.dto'; */
 
 @Injectable()
 export class CalendarDataService {
   constructor(
-    @InjectModel(CalendarData.name)
+    @InjectRepository(CalendarData)
     private calendarDataModel: Model<CalendarDataService>,
-    @InjectModel(Users.name)
-    private userModel: Model<Users>,
+    @InjectRepository(Users) private userModel: Model<Users>,
   ) {}
 
   /* async findAllCalendarData() {

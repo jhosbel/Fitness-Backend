@@ -57,6 +57,6 @@ export class UserConfigController {
   @Auth(Role.USER)
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.userConfigService.remove(+id);
+    return this.userConfigService.remove(id);
   }
 }
