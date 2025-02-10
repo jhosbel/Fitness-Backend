@@ -35,9 +35,7 @@ export class AuthService {
   }
 
   async login({ email, password }: LoginDto) {
-    console.log('Intento de inicio de sesión:', { email, password });
     const user = await this.usersService.findOneByEmail(email);
-    console.log('Usuario encontrado:', user);
     if (!user) {
       throw new UnauthorizedException('Correo invalido');
     }
@@ -49,7 +47,6 @@ export class AuthService {
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    console.log('¿La contraseña es válida?', isPasswordValid);
     if (!isPasswordValid) {
       throw new UnauthorizedException('Contraseña invalida');
     }
