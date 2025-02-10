@@ -19,11 +19,16 @@ export class CalendarData {
   @Column()
   start: string;
 
-  @ManyToOne(() => Users, (user) => user.calendarData, { nullable: false })
+  @Column({ nullable: true })
+  trainingListId: string;
+
+  @ManyToOne(() => Users, (user) => user.calendarData, {
+    nullable: false,
+  })
   user: Users;
 
-  @Column()
-  userEmail: string;
+  /* @Column()
+  userEmail: string; */
 
   @CreateDateColumn()
   createdAt: Date;

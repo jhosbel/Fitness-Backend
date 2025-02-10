@@ -12,6 +12,7 @@ import {
 export class Training {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
   @ManyToMany(() => Exercise)
   @JoinTable()
   exercises: Exercise[];

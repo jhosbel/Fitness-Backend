@@ -50,9 +50,12 @@ export class TrainingListService {
       where: { id: createTrainingListDto.userId },
     });
     if (!findUser) throw new NotFoundException('Usuario no encontrado');
-    const newTrainingList = this.trainingListRepository.create(
-      createTrainingListDto,
-    );
+
+    const newTrainingList = this.trainingListRepository.create({
+      ...createTrainingListDto,
+      user: findUser,
+    });
+
     const trainingListSaved =
       await this.trainingListRepository.save(newTrainingList);
 

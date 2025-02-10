@@ -13,7 +13,7 @@ export class TrainingList {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: false })
+  @Column()
   title: string;
 
   @Column('json')

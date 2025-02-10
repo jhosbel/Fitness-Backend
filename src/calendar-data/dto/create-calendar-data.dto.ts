@@ -1,8 +1,8 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 
 export class CreateCalendarDataDto {
-  @IsString()
-  readonly id: string;
+  /* @IsString()
+  readonly id: string; */
 
   @IsString()
   readonly title: string;
@@ -10,9 +10,11 @@ export class CreateCalendarDataDto {
   @IsString()
   readonly start: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @IsUUID()
   userId: string;
+
+  @IsUUID()
+  trainingListId: string;
 
   @IsString()
   @IsNotEmpty()

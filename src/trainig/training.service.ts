@@ -1,34 +1,47 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTrainigDto } from './dto/create-training.dto';
-import { Model } from 'mongoose';
 import { UpdateTrainigDto } from './dto/update-training.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Training } from './entity/training.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class TrainigService {
   constructor(
-    @InjectRepository(Training) private trainingModel: Model<Training>,
+    @InjectRepository(Training)
+    private trainingRepository: Repository<Training>,
   ) {}
 
   findAllTrainings() {
-    return this.trainingModel.find();
+    return this.trainingRepository.find();
   }
 
   async createTraining(createTraining: CreateTrainigDto) {
-    const newTraining = new this.trainingModel(createTraining);
-    return newTraining.save();
+    const newTraining = this.trainingRepository.create(createTraining);
+    return this.trainingRepository.save(newTraining);
   }
 
   async findOneTraining(id: string) {
-    return await this.trainingModel.findById(id);
+    return await this.trainingRepository.findOne({ where: { id } });
   }
 
   async updateTraining(id: string, training: UpdateTrainigDto) {
-    return this.trainingModel.findByIdAndUpdate(id, training, { new: true });
+    const existingTraining = await this.trainingRepository.findOne({
+      where: { id },
+    });
+    if (!existingTraining) {
+      throw new Error('Entrenamiento no encontrado');
+    }
+    Object.assign(existingTraining, training);
+
+    return this.trainingRepository.save(existingTraining);
   }
 
   async deleteOneTraining(id: string) {
-    return this.trainingModel.findByIdAndDelete(id);
+    const training = await this.trainingRepository.findOne({ where: { id } });
+    if (!training) {
+      throw new Error('Entrenamiento no encontrado');
+    }
+    return this.trainingRepository.remove(training);
   }
 }

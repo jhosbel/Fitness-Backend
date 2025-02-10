@@ -38,7 +38,9 @@ export class Users {
   @JoinTable()
   trainingList: TrainingList[];
 
-  @ManyToMany(() => CalendarData)
+  @OneToMany(() => CalendarData, (calendarData) => calendarData.user, {
+    cascade: true,
+  })
   @JoinTable()
   calendarData: CalendarData[];
 

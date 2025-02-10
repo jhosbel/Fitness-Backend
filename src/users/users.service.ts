@@ -61,11 +61,17 @@ export class UsersService {
   }
 
   findCoachByRole(role: Role) {
-    return this.userRepository.find({ where: { role } });
+    return this.userRepository.find({
+      where: { role },
+      relations: ['trainingList', 'calendarData', 'userConfig', 'friendList'],
+    });
   }
 
   findUserByRole(role: Role) {
-    return this.userRepository.find({ where: { role } });
+    return this.userRepository.find({
+      where: { role },
+      relations: ['trainingList', 'calendarData', 'userConfig', 'friendList'],
+    });
   }
 
   findOneUser(id: string) {
