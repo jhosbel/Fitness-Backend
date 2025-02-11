@@ -1,81 +1,65 @@
 # C-Fitness Backend
 
-Este es el backend de la aplicación C-Fitness desarrollada con NestJS, utilizando MongoDB como base de datos y JWT para la autenticación de usuarios. Proporciona una API RESTful para gestionar usuarios, rutinas de ejercicios, registros de entrenamiento y más.
+This is the backend for the C-Fitness application, developed with NestJS, using PostgreSQL as the database and JWT for user authentication. It provides a RESTful API documented with Swagger to manage users, workout routines, training logs, and more.
 
-## Tecnologías utilizadas
+## Technologies Used
 
-- NestJS: Framework de Node.js para construir aplicaciones escalables y eficientes.
+- **NestJS:** A Node.js framework for building scalable and efficient applications.
+- **PostgreSQL:** A relational database for structured storage.
+- **TypeORM:** ORM for interacting with the database.
+- **Swagger:** Interactive API documentation.
+- **JWT (JSON Web Tokens):** Token-based authentication.
+- **Class-validator/Class-transformer:** Data validation and transformation.
+- **Bcrypt:** Password encryption.
 
-- MongoDB: Base de datos NoSQL para almacenar datos de usuarios, rutinas, entrenamientos, etc.
+## Prerequisites
 
-- Mongoose: ODM (Object Data Modeling) para MongoDB, utilizado para interactuar con la base de datos.
+Before running the project, make sure you have the following installed:
 
-- JWT (JSON Web Tokens): Autenticación basada en tokens para asegurar los endpoints.
+- Node.js (v18 or higher)
+- npm or yarn (package managers)
+- PostgreSQL (local or cloud service like Neon.tech)
+- TypeScript (v5.0+)
 
-- Class-validator y Class-transformer: Validación y transformación de datos.
+## Installation
 
-- Bcrypt: Encriptación de contraseñas.
+1. Clone the repository:
 
-## Requisitos previos
+    ```
+    git clone https://github.com/tu-usuario/fitness-app-backend.git
+    cd fitness-app-backend
+    ```
 
-Antes de ejecutar el proyecto, asegúrate de tener instalado lo siguiente:
+2. Install dependencies:
 
-- Node.js (v16 o superior)
+    ```
+    npm install
+    ```
 
-- npm o yarn (gestores de paquetes)
+3. Set up environment variables (create a `.env` file):
 
-- MongoDB (local o en la nube, por ejemplo, MongoDB Atlas)
+    Create a .env file in the project root and add the following variables:
 
-## Instalación
+    ```
+    JWT_SECRET=tu_clave_secreta_jwt
+    DATABASE_URL=your-postgres-url
+    PORT=7000
+    ```
 
-1. Clona el repositorio:
+4. Development mode
 
-```
-git clone https://github.com/tu-usuario/fitness-app-backend.git
-cd fitness-app-backend
-```
+    ```
+    npm run start:dev
+    ```
 
-2. Instala las dependencias:
+5. Start the server:
 
-```
-npm install
-```
+    ```
+    npm run start
+    ```
 
-3. Configura las variables de entorno:
 
-Crea un archivo .env en la raíz del proyecto y agrega las siguientes variables:
-
-```
-JWT_SECRET=tu_clave_secreta_jwt
-MONGODB_CLUSTER=cluster-de-la-base-de-datos
-MONGODB_DATABASE=nombre-de-la-base-de-datos
-MONGODB_PASS=contraseña-de-mongodb
-MONGODB_USER=usuario-de-mongodb
-```
-
-- MONGODB_USER: Nombre del usuario registrado en la URI de conexión a tu base de datos MongoDB.
-
-- MONGODB_CLUSTER: Cluster de la URI de conexión a tu base de datos MongoDB.
-
-- MONGODB_PASS: Contraseña del usuario registrado en la URI de conexión a tu base de datos MongoDB.
-
-- MONGODB_DATABASE: Nombre de la Base de datos en la URI de conexión a tu base de datos MongoDB.
-
-- JWT_SECRET: Clave secreta para firmar los tokens JWT.
-
-4. Ejecuta el servidor:
-
-```
-npm run start
-```
-
-Para modo de desarrollo (con hot-reload):
-
-```
-npm run start:dev
-```
-
-## Estructura del proyecto
+## Project Structure
   ```
   /Fitness-Backend
   ├── src
@@ -96,17 +80,45 @@ npm run start:dev
   ├── package.json
   └── README.md
   ```
-## Contribución
+
+## Swagger Documentation
+
+  Access the interactive documentation in your browser:
+
+    http://localhost:7000/docs
+
+  Swagger Features:
+
+  - Test endpoints directly from the browser.
+  - Detailed documentation of parameters and responses.
+  - Integrated authentication with JWT.
+  - Data model schemas.
+
+## PostgreSQL Configuration
+  We recommend using Neon.tech for serverless PostgreSQL:
+
+  - Create a free account.
+  - Set up a new project.
+  - Configure the environment variables with the connection details.
+
+## Contributing
 Si deseas contribuir a este proyecto, sigue estos pasos:
 
-1. Haz un fork del repositorio.
+1. Fork the repository.
 
-2. Crea una nueva rama: git checkout -b feature/nueva-funcionalidad.
-
-3. Realiza tus cambios y haz commit: git commit -m 'Añadir nueva funcionalidad'.
-
-4. Sube los cambios: git push origin feature/nueva-funcionalidad.
-
+2. Create a new branch:
+    ```
+    git checkout -b feature/new-feature
+    ```
+3. Make your changes and commit:
+    ```
+    git commit -m 'Add new feature'
+    ```
+4. Push your changes:
+    ```
+    git push origin feature/new-feature
+    ```
 5. Abre un pull request.
-## Licencia
-Este proyecto está bajo la licencia MIT.
+
+## License
+This project is licensed under the MIT License.
