@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  //JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -25,6 +26,7 @@ export class CalendarData {
   @ManyToOne(() => Users, (user) => user.calendarData, {
     nullable: false,
   })
+  //@JoinColumn({ name: 'userId' })
   user: Users;
 
   /* @Column()
